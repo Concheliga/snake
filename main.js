@@ -1,5 +1,8 @@
 const world = document.getElementById('world');
 const pen = world.getContext('2d');
+const input = document.getElementById('sizeInput');
+const submitButton = document.getElementById('submit');
+const minSize = Math.min(window.innerWidth, window.innerHeight);
 let tileSize = 20;
 let tileCount = world.width / tileSize;
 let velocity = {
@@ -7,8 +10,8 @@ let velocity = {
     y: 0
 }
 let food = {
-    x: 15,
-    y: 15
+    x: tileCount - 1,
+    y: tileCount - 1
 }
 let snake = [];
 let snakeHead = {
@@ -17,19 +20,35 @@ let snakeHead = {
 }
 let snakeLength = 1;
 const keyDownHandlers = {
-    'ArrowLeft': ()=>{
+    37: ()=>{
         velocity.x = -1;
         velocity.y = 0;
     },
-    'ArrowRight': ()=>{
+    39: ()=>{
         velocity.x = 1;
         velocity.y = 0;
     },
-    'ArrowUp': ()=>{
+    38: ()=>{
         velocity.x = 0;
         velocity.y = -1;
     },
-    'ArrowDown': ()=>{
+    40: ()=>{
+        velocity.x = 0;
+        velocity.y = 1;
+    },
+    65: ()=>{
+        velocity.x = -1;
+        velocity.y = 0;
+    },
+    68: ()=>{
+        velocity.x = 1;
+        velocity.y = 0;
+    },
+    87: ()=>{
+        velocity.x = 0;
+        velocity.y = -1;
+    },
+    83: ()=>{
         velocity.x = 0;
         velocity.y = 1;
     }
@@ -80,14 +99,51 @@ function updateSnakeBody(){
 function canEatFood(){
     if (food.x === snakeHead.x && food.y === snakeHead.y){
         snakeLength ++;
-        food.x = Math.floor(Math.random() * tileCount);
-        food.y = Math.floor(Math.random() * tileCount);
+        let potentialFoodX = Math.floor(Math.random() * tileCount);
+        let potentialFoodY = Math.floor(Math.random() * tileCount);
+        let flag = true;
+
+        while(true){
+            for (snakeTile of snake){
+                if (snakeTile.x === potentialFoodX && snakeTile.y === potentialFoodY) flag = false;
+            }
+
+            if (potentialFoodX === snakeHead.x && potentialFoodY === snakeHead.y) flag = false;
+            if (flag) break;
+
+            potentialFoodX = Math.floor(Math.random() * tileCount);
+            potentialFoodY = Math.floor(Math.random() * tileCount);
+        }
+        
+        food.x = potentialFoodX;
+        food.y = potentialFoodY;        
     }
 }
 
-function onKeyDown(event){
-    if (keyDownHandlers.hasOwnProperty(event.key)){
-        keyDownHandlers[event.key]();
+function onArrowsKeyDown(event){
+    if (keyDownHandlers.hasOwnProperty(event.keyCode)) keyDownHandlers[event.keyCode]();
+    
+}
+
+function onEnterKeyDown(event){
+    if (event.code === 'Enter') {
+        event.target.blur();
+        onSubmitClick(event);
+    }
+}
+
+function onSubmitClick(event){
+    event.preventDefault();
+    if (input.value >= 200 && input.value < minSize && input.value % 20 === 0){
+        world.width = input.value;
+        world.height = input.value;
+        tileCount = world.width / tileSize;
+        food = {
+            x: tileCount - 1,
+            y: tileCount - 1
+        }
+    } else{
+        alert('неверный размер поля');
     }
 }
 
@@ -100,7 +156,9 @@ function updateGame(){
     updateSnakeBody();
 }
 
-document.addEventListener('keydown', onKeyDown);
+submitButton.addEventListener('click', onSubmitClick);
+document.addEventListener('keydown', onArrowsKeyDown);
+input.addEventListener('keydown', onEnterKeyDown)
 setInterval(updateGame, 100);
 
 

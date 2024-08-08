@@ -10,8 +10,28 @@
     <div class="container">
         <span class="sizeText">Size:</span>
         <form action="">
-            <input class="sizeInput" id="sizeInput" type="number" min="200" max="800" required step="20" value="400">
-            <input id="submit" type="submit" value="Изменить размер" />
+            <div>
+                <label for="sizeInput">Размер:</label>
+                <input class="sizeInput" id="sizeInput" type="number" min="200" max="800" required step="20" value="400">
+            </div>
+            <div>
+                <input type="radio" id="false-walls" class="walls" value="false-walls" name="isWall" checked>
+                <label for="false-walls">Можно проходить сквозь стены</label>
+            </div>
+            <div>
+                <input type="radio" id="true-walls" class="walls" value="true-walls" name="isWall">
+                <label for="true-walls">Нельзя проходить сквозь стены</label>
+            </div>
+            <div class="difficulty">
+                <label class="difficulty-title">Сложность:</label>
+                <input type="radio" id="low-difficulty" class="difficulty" value="low-difficulty" name="difficulty">
+                <label for="low-difficulty">Легкая</label>
+                <input type="radio" id="mid-difficulty" class="difficulty" value="mid-difficulty" name="difficulty" checked>
+                <label for="mid-difficulty">Средняя</label>
+                <input type="radio" id="high-difficulty" class="difficulty" value="high-difficulty" name="difficulty">
+                <label for="high-difficulty">Сложная</label>
+            </div>
+            <input id="submit" type="submit" value="Начать" />
         </form>
         
         <canvas id="world" width="400" height="400"></canvas>

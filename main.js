@@ -10,6 +10,10 @@ const minSize = Math.min(window.innerWidth, window.innerHeight);
 let interval = null;
 let tileSize = 20;
 let tileCount = world.width / tileSize;
+let startX = 0;
+let endX = 0;
+let startY = 0;
+let endY = 0;
 let velocity = {
     x: 0,
     y: 0
@@ -117,7 +121,7 @@ function updateSnakeBody() {
     }
 
     score.textContent = snakeLength;
-    
+
     if (snakeLength > Number(bestScore.textContent)) bestScore.textContent = snakeLength;
 }
 
@@ -206,6 +210,44 @@ function run(){
     }
 }
 
+function onTouchStart(event){
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+}
+
+function onTouchMove(event){
+    endX = event.touches[0].clientX;
+    endY = event.touches[0].clientY;
+}
+
+function onTouchEnd(){
+    const differenceX = startX - endX;
+    const differenceY = startY - endY;
+
+    if (Math.abs(differenceX) > 40){
+        if (differenceX > 0) {
+            velocity.x = -1;
+            velocity.y = 0; 
+        } else{
+            velocity.x = 1;
+            velocity.y = 0;
+        }
+    }
+
+    if (Math.abs(differenceY) > 40){
+        if (differenceY > 0) {
+            velocity.x = 0;
+            velocity.y = -1; 
+        } else{
+            velocity.x = 0;
+            velocity.y = 1;
+        }
+    }
+}
+
 submitButton.addEventListener('click', onSubmitClick);
 document.addEventListener('keydown', onArrowsKeyDown);
 input.addEventListener('keydown', onEnterKeyDown);
+document.addEventListener('touchstart', onTouchStart)
+document.addEventListener('touchmove', onTouchMove)
+document.addEventListener('touchend', onTouchEnd)

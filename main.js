@@ -1,9 +1,11 @@
 const world = document.getElementById('world');
 const pen = world.getContext('2d');
-const input = document.getElementById('sizeInput');
+const input = document.getElementById('size-input');
 const submitButton = document.getElementById('submit');
 const radioTrue = document.getElementById('true-walls');
 const difficultyRadios = document.querySelectorAll('.difficulty');
+const score = document.querySelector('.score-number');
+const bestScore = document.querySelector('.best-score-number');
 const minSize = Math.min(window.innerWidth, window.innerHeight);
 let interval = null;
 let tileSize = 20;
@@ -113,6 +115,10 @@ function updateSnakeBody() {
     while (snake.length > snakeLength) {
         snake.shift();
     }
+
+    score.textContent = snakeLength;
+    
+    if (snakeLength > Number(bestScore.textContent)) bestScore.textContent = snakeLength;
 }
 
 function canEatFood() {

@@ -8,11 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <span class="sizeText">Size:</span>
         <form action="">
             <div>
-                <label for="sizeInput">Размер:</label>
-                <input class="sizeInput" id="sizeInput" type="number" min="200" max="800" required step="20" value="400">
+                <label for="size-input">Размер:</label>
+                <input class="size-input" id="size-input" type="number" min="200" max="800" required step="20" value="400">
             </div>
             <div>
                 <input type="radio" id="false-walls" class="walls" value="false-walls" name="isWall" checked>
@@ -33,7 +32,14 @@
             </div>
             <input id="submit" type="submit" value="Начать" />
         </form>
-        
+        <div class="score">
+            <p class="score-title">Счет:</p>
+            <p class="score-number">0</p>
+        </div>
+        <div class="best-score">
+            <p class="best-score-title">Лучший счет:</p>
+            <p class="best-score-number">0</p>
+        </div>
         <canvas id="world" width="400" height="400"></canvas>
     </div>
     <script src="main.js"></script>
